@@ -16,7 +16,6 @@ import com.google.common.base.Preconditions;
 import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -307,7 +306,7 @@ public abstract class PlotPlayer implements CommandCaller, OfflinePlotPlayer {
      *
      * @return The location
      */
-    public Location getLocation() {
+    @NotNull public Location getLocation() {
         Location location = getMeta("location");
         if (location != null) {
             return location;
@@ -422,21 +421,21 @@ public abstract class PlotPlayer implements CommandCaller, OfflinePlotPlayer {
      *
      * @param weather the weather visible to the player
      */
-    public abstract void setWeather(@Nonnull PlotWeather weather);
+    public abstract void setWeather(@NotNull PlotWeather weather);
 
     /**
      * Get this player's gamemode.
      *
      * @return the gamemode of the player.
      */
-    @Nonnull public abstract PlotGameMode getGameMode();
+    @NotNull public abstract PlotGameMode getGameMode();
 
     /**
      * Set this player's gameMode.
      *
      * @param gameMode the gamemode to set
      */
-    public abstract void setGameMode(@Nonnull PlotGameMode gameMode);
+    public abstract void setGameMode(@NotNull PlotGameMode gameMode);
 
     /**
      * Set this player's local time (ticks).
@@ -465,7 +464,7 @@ public abstract class PlotPlayer implements CommandCaller, OfflinePlotPlayer {
      * @param location where to play the music
      * @param id       the record item id
      */
-    public abstract void playMusic(@Nonnull Location location, @Nonnull PlotBlock id);
+    public abstract void playMusic(@NotNull Location location, @NotNull PlotBlock id);
 
     /**
      * Check if this player is banned.
