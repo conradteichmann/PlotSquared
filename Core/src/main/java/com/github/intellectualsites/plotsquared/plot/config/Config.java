@@ -12,6 +12,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -354,6 +355,23 @@ public class Config {
         return field.toLowerCase().replace("_", "-");
     }
 
+    private static final VarHandle MODIFIERS;
+
+    static {
+        try {
+            var lookup = MethodHandles.privateLookupIn(Field.class, MethodHandles.lookup());
+            MODIFIERS = lookup.findVarHandle(Field.class, "modifiers", int.class);
+        } catch (IllegalAccessException | NoSuchFieldException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    public static void makeNonFinal(Field field) {
+        int mods = field.getModifiers();
+        if (Modifier.isFinal(mods)) {
+            MODIFIERS.set(field, mods & ~Modifier.FINAL);
+        }
+    }
+
     /**
      * Set some field to be accessible.
      *
@@ -364,9 +382,7 @@ public class Config {
     private static void setAccessible(Field field)
         throws NoSuchFieldException, IllegalAccessException {
         field.setAccessible(true);
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+        makeNonFinal(field);
     }
 
     /**

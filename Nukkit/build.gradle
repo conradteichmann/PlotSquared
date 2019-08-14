@@ -17,8 +17,8 @@ configurations.all {
     }
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 12
+targetCompatibility = 12
 processResources {
     from('src/main/resources') {
         include 'plugin.yml'
